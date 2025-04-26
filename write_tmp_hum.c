@@ -183,17 +183,14 @@ int main()
 
     while (1){
         // Get I2C device, SI7021 I2C address is 0x40(64)
-        FILE* fp;
-        if((fp= fopen ("output.txt","w"))<0){
-            printf("Failed to open output.txt");
-        }
+
         ioctl(file, I2C_SLAVE, 0x40);
 
         // Send humidity measurement command(0xF5)
         char config[1] = {0xF5};
         write(file, config, 1);
         sleep(1);
-
+        float humidity;
         // Read 2 bytes of humidity data
         // humidity msb, humidity lsb
         char data[2] = {0};
@@ -204,10 +201,9 @@ int main()
         else
         {
             // Convert the data
-            float humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
+            humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
 
             // Output data to screen
-            fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
         }
 
         // Send temperature measurement command(0xF3)
@@ -217,6 +213,11 @@ int main()
 
         // Read 2 bytes of temperature data
         // temp msb, temp lsb
+        FILE* fp;
+        if((fp= fopen ("output.txt","w"))<0){
+            printf("Failed to open output.txt");
+        }
+        
         if(read(file, data, 2) != 2)
         {
             printf("Error : Input/output Error \n");
@@ -232,7 +233,7 @@ int main()
         }
 
 
-
+        fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
 
         for (int channel=0 ; channel<3;channel++){
             double degree;
