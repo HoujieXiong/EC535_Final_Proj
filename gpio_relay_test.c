@@ -60,7 +60,7 @@ int main () {
 		return -1;
 	}
     printf("Writing to file\n"); // DEBUG
-	fprintf(GPIO_DIRECTION, "out");
+	fwrite("out", 4, 1, GPIO_DIRECTION);
 	fclose(GPIO_DIRECTION);
     printf("Closing file\n"); // DEBUG
 
