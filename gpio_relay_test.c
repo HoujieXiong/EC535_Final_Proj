@@ -33,6 +33,7 @@ void digitalWrite(int gpio, int value) {
     close(fd);
 }
 
+
 int main () {
 
     // GPIO setup
@@ -58,13 +59,13 @@ int main () {
 	fprintf(GPIO_SETUP, "out");
 	fclose(GPIO_SETUP);
 
-    while (1) {
+    // while (1) {
 
-        sleep(1);
-        digitalWrite(LIGHT_GPIO, 1);
-        sleep(1);
-        digitalWrite(LIGHT_GPIO, 0);
-    }
+    //     sleep(1);
+    //     digitalWrite(LIGHT_GPIO, 1);
+    //     sleep(1);
+    //     digitalWrite(LIGHT_GPIO, 0);
+    // }
 
     return 0;
 }
