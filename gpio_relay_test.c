@@ -48,6 +48,7 @@ int main () {
 	fclose(GPIO_SETUP);
 
 	// Set GPIO direction
+    sleep(1);
     int GPIO_DIRECTION;
     char gpio_path[128];
     char out[] = "out";
