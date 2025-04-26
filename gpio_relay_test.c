@@ -39,7 +39,7 @@ int main () {
     // GPIO setup
 	FILE *GPIO_SETUP;
 	GPIO_SETUP = fopen("/sys/class/gpio/export", "w");
-	if (GPIO_SETUP < 0) {
+	if (GPIO_SETUP == NULL) {
 
 		perror("Failed to set up GPIO!\n");
 		return -1;
@@ -48,11 +48,12 @@ int main () {
 	fclose(GPIO_SETUP);
 
 	// Set GPIO direction
-    FILE *GPIO_DIRECTION;
+    int GPIO_DIRECTION;
     char gpio_path[128];
+    char out[] = "out";
 	snprintf(gpio_path, sizeof(gpio_path), "/sys/class/gpio/gpio%d/direction", LIGHT_GPIO);
 	printf("Snprintf\n"); // DEBUG
-    GPIO_DIRECTION = fopen(gpio_path, "w");
+    GPIO_DIRECTION = open(gpio_path, O_WRONLY);
     printf("Opening GPIO_DIRECTION file\n"); // DEBUG
 	if (GPIO_DIRECTION < 0) {
 
@@ -60,9 +61,9 @@ int main () {
 		return -1;
 	}
     printf("Writing to file\n"); // DEBUG
-	fwrite("out", 4, 1, GPIO_DIRECTION);
+	write(GPIO_DIRECTION, out, sizeof(out)); 
     printf("Closing file\n"); // DEBUG
-    fclose(GPIO_DIRECTION);
+    close(GPIO_DIRECTION);
 
     // while (1) {
 
