@@ -1,3 +1,8 @@
+/* 
+ * EC535 Final Project - Smart Gardening System
+ */
+
+// Includes
 #include <stdio.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -7,6 +12,11 @@
 #include <sys/ioctl.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+
+// Macros 
+#define LIGHT_GPIO 			66			// GPIO number used for controlling flood light relay
+#define TEMP_THRESHOLD		27			// Threshold temperature (in Celsius) below which the grow lights should turn on
 
 
 
@@ -52,13 +62,15 @@ double raw_to_degree(int raw_value){
 
 int main()
 {
-    // write file destination 
-
+    // Write file destination 
     FILE* fp;
     if((fp= fopen ("output.txt",'w'))<0){
         printf("Failed to open output.txt");
     }
 
+
+
+	/*************Hardware Setup*****************/
 
 	// Create I2C bus
 	int file;
@@ -68,6 +80,35 @@ int main()
 		printf("Failed to open the bus. \n");
 		exit(1);
 	}
+
+	
+	// GPIO setup
+	FILE *GPIO_SETUP;
+	GPIO_SETUP = fopen("/sys/class/gpio/export", "w");
+	if (GPIO_SETUP < 0) {
+
+		perror("Failed to set up GPIO!\n");
+		return -1;
+	}
+	fprintf(GPIO_SETUP, "%d", LIGHT_GPIO);
+	fclose(GPIO_SETUP);
+
+	// Set GPIO direction
+	char gpio_path[128];
+	snprintf(gpio_path, sizeof(gpio_path), "/sys/class/gpio/gpio%d/direction", LIGHT_GPIO);
+	GPIO_SETUP = fopen(path, "w");
+	if (GPIO_SETUP < 0) {
+
+		perror("Failed to set up GPIO! Check GPIO number.\n");
+		return -1;
+	}
+	fprintf(GPIO_SETUP, "out");
+	fclose(GPIO_SETUP);
+
+	
+	
+	/*************Humidity sensor processes*****************/
+
 	// Get I2C device, SI7021 I2C address is 0x40(64)
 	ioctl(file, I2C_SLAVE, 0x40);
 
@@ -116,7 +157,7 @@ int main()
 
 
 
-
+	/*************Temperature sensor (TMP36) readings*****************/
 
     int channel = 0;  // AIN0
     double degree;
@@ -127,6 +168,17 @@ int main()
         return 1;
     }
     printf("AIN%d raw = %d\n degree = %f", channel, raw, degree);
+
+
+	/*************Grow Light Control*****************/
+
+	// If the temperature falls below 27 degrees C, then the grow lights should come on
+	if (degree < TEMP_THRESHOLD) {
+
+		
+	}
+
+	return 0;
 }
 
 
