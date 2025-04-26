@@ -61,8 +61,8 @@ int main () {
 	}
     printf("Writing to file\n"); // DEBUG
 	fwrite("out", 4, 1, GPIO_DIRECTION);
-	fclose(GPIO_DIRECTION);
     printf("Closing file\n"); // DEBUG
+    fclose(GPIO_DIRECTION);
 
     // while (1) {
 
