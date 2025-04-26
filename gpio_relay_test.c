@@ -66,13 +66,13 @@ int main () {
     printf("Closing file\n"); // DEBUG
     close(GPIO_DIRECTION);
 
-    // while (1) {
+    while (1) {
 
-    //     sleep(1);
-    //     digitalWrite(LIGHT_GPIO, 1);
-    //     sleep(1);
-    //     digitalWrite(LIGHT_GPIO, 0);
-    // }
+        sleep(1);
+        digitalWrite(LIGHT_GPIO, 1);
+        sleep(1);
+        digitalWrite(LIGHT_GPIO, 0);
+    }
 
     return 0;
 }
