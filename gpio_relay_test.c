@@ -48,16 +48,17 @@ int main () {
 	fclose(GPIO_SETUP);
 
 	// Set GPIO direction
-	// char gpio_path[128];
-	// snprintf(gpio_path, sizeof(gpio_path), "/sys/class/gpio/gpio%d/direction", LIGHT_GPIO);
-	// GPIO_SETUP = fopen(gpio_path, "w");
-	// if (GPIO_SETUP < 0) {
+    FILE *GPIO_DIRECTION;
+	char gpio_path[128];
+	snprintf(gpio_path, sizeof(gpio_path), "/sys/class/gpio/gpio%d/direction", LIGHT_GPIO);
+	GPIO_DIRECTION = fopen(gpio_path, "w");
+	if (GPIO_DIRECTION < 0) {
 
-	// 	perror("Failed to set up GPIO! Check GPIO number.\n");
-	// 	return -1;
-	// }
-	// fprintf(GPIO_SETUP, "out");
-	// fclose(GPIO_SETUP);
+		perror("Failed to set up GPIO! Check GPIO number.\n");
+		return -1;
+	}
+	fprintf(GPIO_DIRECTION, "out");
+	fclose(GPIO_DIRECTION);
 
     // while (1) {
 
