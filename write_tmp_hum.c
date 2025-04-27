@@ -55,7 +55,7 @@ int main()
     // write file destination 
 
     FILE* fp;
-    if((fp= fopen ("output.txt",'w'))<0){
+    if((fp= fopen ("output.txt","w"))<0){
         printf("Failed to open output.txt");
     }
 
