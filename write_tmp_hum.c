@@ -54,11 +54,6 @@ int main()
 {
     // write file destination 
 
-    FILE* fp;
-    if((fp= fopen ("output.txt","w"))<0){
-        printf("Failed to open output.txt");
-    }
-
 
 	// Create I2C bus
 	int file;
@@ -72,6 +67,10 @@ int main()
 
     while (1){
         // Get I2C device, SI7021 I2C address is 0x40(64)
+        FILE* fp;
+        if((fp= fopen ("output.txt","w"))<0){
+            printf("Failed to open output.txt");
+        }
         ioctl(file, I2C_SLAVE, 0x40);
 
         // Send humidity measurement command(0xF5)
@@ -130,6 +129,7 @@ int main()
             }
             fprintf(fp,"AIN%d raw = %d\n degree = %f", channel, raw, degree);   
         }
+        fclose(fp);
         sleep(1);
     }   
 }
