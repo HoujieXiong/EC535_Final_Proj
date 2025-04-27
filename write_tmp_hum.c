@@ -130,6 +130,7 @@ int main()
         }
         
         fclose(fp);
+        sleep(1);
     }   
 }
 
