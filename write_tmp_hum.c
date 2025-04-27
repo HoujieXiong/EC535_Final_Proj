@@ -112,8 +112,7 @@ int main()
             float fTemp = cTemp * 1.8 + 32;
 
             // Output data to screen
-            fprintf(fp,"Temperature in Celsius : %.2f C \n", cTemp);
-            fprintf(fp,"Temperature in Fahrenheit : %.2f F \n", fTemp);
+            fprintf(fp,"Temperature: %.2f C \n", cTemp);
         }
 
 
@@ -127,10 +126,10 @@ int main()
                 fprintf(stderr, "Failed to read ADC channel %d\n", channel);
                 return 1;
             }
-            fprintf(fp,"AIN%d raw = %d\n degree = %f", channel, raw, degree);   
+            fprintf(fp,"Temperature: %.2f C \n", degree);   
         }
+        
         fclose(fp);
-        sleep(1);
     }   
 }
 
