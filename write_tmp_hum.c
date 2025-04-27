@@ -62,7 +62,7 @@ int main()
 
 	// Create I2C bus
 	int file;
-	char *bus = "/dev/i2c-1";
+	char *bus = "/dev/i2c-2";
 	if((file = open(bus, O_RDWR)) < 0) 
 	{
 		printf("Failed to open the bus. \n");
@@ -128,7 +128,7 @@ int main()
                 fprintf(stderr, "Failed to read ADC channel %d\n", channel);
                 return 1;
             }
-            printf("AIN%d raw = %d\n degree = %f", channel, raw, degree);   
+            fprintf(fp,"AIN%d raw = %d\n degree = %f", channel, raw, degree);   
         }
         sleep(1);
     }   
