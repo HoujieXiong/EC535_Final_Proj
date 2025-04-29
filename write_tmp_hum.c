@@ -162,56 +162,56 @@ int main()
     while (1) {
         // Get I2C device, SI7021 I2C address is 0x40(64)
 
-        ioctl(file, I2C_SLAVE, 0x40);
+        // ioctl(file, I2C_SLAVE, 0x40);
 
         // Send humidity measurement command(0xF5)
-        char config[1] = {0xF5};
-        write(file, config, 1);
-        sleep(1);
-        float humidity;
+        // char config[1] = {0xF5};
+        // write(file, config, 1);
+        // sleep(1);
+        // float humidity;
         // Read 2 bytes of humidity data
         // humidity msb, humidity lsb
-        char data[2] = {0};
-        if(read(file, data, 2) != 2)
-        {
-            printf("Error : Input/output Error \n");
-        }
-        else
-        {
-            // Convert the data
-            humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
+        // char data[2] = {0};
+        // if(read(file, data, 2) != 2)
+        // {
+        //     printf("Error : Input/output Error \n");
+        // }
+        // else
+        // {
+        //     // Convert the data
+        //     humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
 
-            // Output data to screen
-        }
+        //     // Output data to screen
+        // }
 
         // Send temperature measurement command(0xF3)
-        config[0] = 0xF3;
-        write(file, config, 1); 
-        sleep(1);
+        // config[0] = 0xF3;
+        // write(file, config, 1); 
+        // sleep(1);
 
         // Read 2 bytes of temperature data
         // temp msb, temp lsb
-        FILE* fp;
-        if((fp= fopen ("output.txt","w"))<0){
-            printf("Failed to open output.txt");
-        }
+        // FILE* fp;
+        // if((fp= fopen ("output.txt","w"))<0){
+        //     printf("Failed to open output.txt");
+        // }
         
-        if(read(file, data, 2) != 2)
-        {
-            printf("Error : Input/output Error \n");
-        }
-        else
-        {
-            // Convert the data
-            float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
-            float fTemp = cTemp * 1.8 + 32;
+        // if(read(file, data, 2) != 2)
+        // {
+        //     printf("Error : Input/output Error \n");
+        // }
+        // else
+        // {
+        //     // Convert the data
+        //     float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
+        //     float fTemp = cTemp * 1.8 + 32;
 
-            // Output data to screen
-            fprintf(fp,"Temperature: %.2f C \n", cTemp);
-        }
+        //     // Output data to screen
+        //     fprintf(fp,"Temperature: %.2f C \n", cTemp);
+        // }
 
 
-        fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
+        // fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
 
 
         // ******** temp_reading
