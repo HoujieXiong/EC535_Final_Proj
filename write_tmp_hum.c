@@ -147,6 +147,13 @@ int main()
         digitalWrite(LIGHT_GPIO, 0);
     }
 
+    digitalWrite(LIGHT_GPIO, 1);
+    while (1)
+    {
+        /* code */
+    }
+    
+
     while (1) {
 
         sleep(1);
