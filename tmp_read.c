@@ -36,7 +36,7 @@ int read_adc_raw(int channel) {
 
 double raw_to_degree(int raw_value){
     double voltage= 1.8 * (double) raw_value /4096;
-    double tmp = (voltage-0.5)/10;
+    double tmp = (voltage-0.5)*100;
     return tmp;
 }
 
