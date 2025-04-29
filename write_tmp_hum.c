@@ -30,7 +30,7 @@ int main()
 {
     // Write file destination 
     FILE* fp;
-    if((fp= fopen ("output.txt",'w'))<0){
+    if((fp= fopen ("output.txt","w"))<0){
         printf("Failed to open output.txt");
     }
 
@@ -49,27 +49,27 @@ int main()
 
 	
 	// GPIO setup
-	FILE *GPIO_SETUP;
-	GPIO_SETUP = fopen("/sys/class/gpio/export", "w");
-	if (GPIO_SETUP < 0) {
+	// FILE *GPIO_SETUP;
+	// GPIO_SETUP = fopen("/sys/class/gpio/export", "w");
+	// if (GPIO_SETUP < 0) {
 
-		perror("Failed to set up GPIO!\n");
-		return -1;
-	}
-	fprintf(GPIO_SETUP, "%d", LIGHT_GPIO);
-	fclose(GPIO_SETUP);
+	// 	perror("Failed to set up GPIO!\n");
+	// 	return -1;
+	// }
+	// fprintf(GPIO_SETUP, "%d", LIGHT_GPIO);
+	// fclose(GPIO_SETUP);
 
 	// Set GPIO direction
-	char gpio_path[128];
-	snprintf(gpio_path, sizeof(gpio_path), "/sys/class/gpio/gpio%d/direction", LIGHT_GPIO);
-	GPIO_SETUP = fopen(path, "w");
-	if (GPIO_SETUP < 0) {
+	// char gpio_path[128];
+	// snprintf(gpio_path, sizeof(gpio_path), "/sys/class/gpio/gpio%d/direction", LIGHT_GPIO);
+	// GPIO_SETUP = fopen(path, "w");
+	// if (GPIO_SETUP < 0) {
 
-		perror("Failed to set up GPIO! Check GPIO number.\n");
-		return -1;
-	}
-	fprintf(GPIO_SETUP, "out");
-	fclose(GPIO_SETUP);
+	// 	perror("Failed to set up GPIO! Check GPIO number.\n");
+	// 	return -1;
+	// }
+	// fprintf(GPIO_SETUP, "out");
+	// fclose(GPIO_SETUP);
 
 	
 	
