@@ -147,6 +147,7 @@ int main()
     //     digitalWrite(LIGHT_GPIO, 0);
     // }
 
+    // DEBUG
     digitalWrite(LIGHT_GPIO, 1);
 
 
