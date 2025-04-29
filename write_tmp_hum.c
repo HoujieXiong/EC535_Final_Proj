@@ -139,13 +139,13 @@ int main()
 	// /*************Grow Light Control*****************/
 
 	// If the temperature falls below 27 degrees C, then the grow lights should come on
-	if (degree < TEMP_THRESHOLD) {
+	// if (degree < TEMP_THRESHOLD) {
 
-		digitalWrite(LIGHT_GPIO, 1);
-	} else {
+	// 	digitalWrite(LIGHT_GPIO, 1);
+	// } else {
 
-        digitalWrite(LIGHT_GPIO, 0);
-    }
+    //     digitalWrite(LIGHT_GPIO, 0);
+    // }
 
     digitalWrite(LIGHT_GPIO, 1);
 
