@@ -191,10 +191,10 @@ int main()
 
         // Read 2 bytes of temperature data
         // temp msb, temp lsb
-        // FILE* fp;
-        // if((fp= fopen ("output.txt","w"))<0){
-        //     printf("Failed to open output.txt");
-        // }
+        FILE* fp;
+        if((fp= fopen ("output.txt","w"))<0){
+            printf("Failed to open output.txt");
+        }
         
         // if(read(file, data, 2) != 2)
         // {
