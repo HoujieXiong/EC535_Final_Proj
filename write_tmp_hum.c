@@ -29,10 +29,10 @@ void digitalWrite (int gpio, int value);    // Write HIGH or LOW to a selected G
 int main()
 {
     // Write file destination 
-    FILE* fp;
-    if((fp= fopen ("output.txt","w"))<0){
-        printf("Failed to open output.txt");
-    }
+    // FILE* fp;
+    // if((fp= fopen ("output.txt","w"))<0){
+    //     printf("Failed to open output.txt");
+    // }
 
 
 	/*************Hardware Setup*****************/
@@ -75,68 +75,68 @@ int main()
 	
 	/*************Humidity sensor processes*****************/
 
-	// Get I2C device, SI7021 I2C address is 0x40(64)
-	ioctl(file, I2C_SLAVE, 0x40);
+	// // Get I2C device, SI7021 I2C address is 0x40(64)
+	// ioctl(file, I2C_SLAVE, 0x40);
 
-	// Send humidity measurement command(0xF5)
-	char config[1] = {0xF5};
-	write(file, config, 1);
-    sleep(1);
+	// // Send humidity measurement command(0xF5)
+	// char config[1] = {0xF5};
+	// write(file, config, 1);
+    // sleep(1);
 
-	// Read 2 bytes of humidity data
-	// humidity msb, humidity lsb
-	char data[2] = {0};
-	if(read(file, data, 2) != 2)
-	{
-		printf("Error : Input/output Error \n");
-	}
-	else
-	{
-		// Convert the data
-		float humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
+	// // Read 2 bytes of humidity data
+	// // humidity msb, humidity lsb
+	// char data[2] = {0};
+	// if(read(file, data, 2) != 2)
+	// {
+	// 	printf("Error : Input/output Error \n");
+	// }
+	// else
+	// {
+	// 	// Convert the data
+	// 	float humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
 
-		// Output data to screen
-		fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
-	}
+	// 	// Output data to screen
+	// 	fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
+	// }
 
-	// Send temperature measurement command(0xF3)
-	config[0] = 0xF3;
-	write(file, config, 1); 
-	sleep(1);
+	// // Send temperature measurement command(0xF3)
+	// config[0] = 0xF3;
+	// write(file, config, 1); 
+	// sleep(1);
 
-	// Read 2 bytes of temperature data
-	// temp msb, temp lsb
-	if (read(file, data, 2) != 2)
-	{
-		printf("Error : Input/output Error \n");
-	}
-	else
-	{
-		// Convert the data
-		float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
-		float fTemp = cTemp * 1.8 + 32;
+	// // Read 2 bytes of temperature data
+	// // temp msb, temp lsb
+	// if (read(file, data, 2) != 2)
+	// {
+	// 	printf("Error : Input/output Error \n");
+	// }
+	// else
+	// {
+	// 	// Convert the data
+	// 	float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
+	// 	float fTemp = cTemp * 1.8 + 32;
 
-		// Output data to screen
-		fprintf(fp,"Temperature in Celsius : %.2f C \n", cTemp);
-		fprintf(fp,"Temperature in Fahrenheit : %.2f F \n", fTemp);
-	}
-
-
-
-	/*************Temperature sensor (TMP36) readings*****************/
-
-    int channel = 0;  // AIN0
-    double degree;
-    int raw = read_adc_raw(channel);
-    degree = raw_to_degree(raw);
-    if (raw < 0) {
-        fprintf(stderr, "Failed to read ADC channel %d\n", channel);
-        return 1;
-    }
-    printf("AIN%d raw = %d\n degree = %f", channel, raw, degree);
+	// 	// Output data to screen
+	// 	fprintf(fp,"Temperature in Celsius : %.2f C \n", cTemp);
+	// 	fprintf(fp,"Temperature in Fahrenheit : %.2f F \n", fTemp);
+	// }
 
 
-	/*************Grow Light Control*****************/
+
+	// /*************Temperature sensor (TMP36) readings*****************/
+
+    // // int channel = 0;  // AIN0
+    // // double degree;
+    // // int raw = read_adc_raw(channel);
+    // // degree = raw_to_degree(raw);
+    // // if (raw < 0) {
+    // //     fprintf(stderr, "Failed to read ADC channel %d\n", channel);
+    // //     return 1;
+    // // }
+    // // printf("AIN%d raw = %d\n degree = %f", channel, raw, degree);
+
+
+	// /*************Grow Light Control*****************/
 
 	// If the temperature falls below 27 degrees C, then the grow lights should come on
 	if (degree < TEMP_THRESHOLD) {
@@ -148,88 +148,86 @@ int main()
     }
 
     digitalWrite(LIGHT_GPIO, 1);
-    while (1)
-    {
-        /* code */
-    }
-    
 
-    while (1) {
-
-        sleep(1);
-        digitalWrite(LIGHT_GPIO, 1);
-        sleep(1);
-        digitalWrite(LIGHT_GPIO, 0);
-    }
 
     // while (1) {
-    //     // Get I2C device, SI7021 I2C address is 0x40(64)
 
-    //     ioctl(file, I2C_SLAVE, 0x40);
-
-    //     // Send humidity measurement command(0xF5)
-    //     char config[1] = {0xF5};
-    //     write(file, config, 1);
     //     sleep(1);
-    //     float humidity;
-    //     // Read 2 bytes of humidity data
-    //     // humidity msb, humidity lsb
-    //     char data[2] = {0};
-    //     if(read(file, data, 2) != 2)
-    //     {
-    //         printf("Error : Input/output Error \n");
-    //     }
-    //     else
-    //     {
-    //         // Convert the data
-    //         humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
-
-    //         // Output data to screen
-    //     }
-
-    //     // Send temperature measurement command(0xF3)
-    //     config[0] = 0xF3;
-    //     write(file, config, 1); 
+    //     digitalWrite(LIGHT_GPIO, 1);
     //     sleep(1);
+    //     digitalWrite(LIGHT_GPIO, 0);
+    // }
 
-    //     // Read 2 bytes of temperature data
-    //     // temp msb, temp lsb
-    //     FILE* fp;
-    //     if((fp= fopen ("output.txt","w"))<0){
-    //         printf("Failed to open output.txt");
-    //     }
+    while (1) {
+        // Get I2C device, SI7021 I2C address is 0x40(64)
+
+        ioctl(file, I2C_SLAVE, 0x40);
+
+        // Send humidity measurement command(0xF5)
+        char config[1] = {0xF5};
+        write(file, config, 1);
+        sleep(1);
+        float humidity;
+        // Read 2 bytes of humidity data
+        // humidity msb, humidity lsb
+        char data[2] = {0};
+        if(read(file, data, 2) != 2)
+        {
+            printf("Error : Input/output Error \n");
+        }
+        else
+        {
+            // Convert the data
+            humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
+
+            // Output data to screen
+        }
+
+        // Send temperature measurement command(0xF3)
+        config[0] = 0xF3;
+        write(file, config, 1); 
+        sleep(1);
+
+        // Read 2 bytes of temperature data
+        // temp msb, temp lsb
+        FILE* fp;
+        if((fp= fopen ("output.txt","w"))<0){
+            printf("Failed to open output.txt");
+        }
         
-    //     if(read(file, data, 2) != 2)
-    //     {
-    //         printf("Error : Input/output Error \n");
-    //     }
-    //     else
-    //     {
-    //         // Convert the data
-    //         float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
-    //         float fTemp = cTemp * 1.8 + 32;
+        if(read(file, data, 2) != 2)
+        {
+            printf("Error : Input/output Error \n");
+        }
+        else
+        {
+            // Convert the data
+            float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
+            float fTemp = cTemp * 1.8 + 32;
 
-    //         // Output data to screen
-    //         fprintf(fp,"Temperature: %.2f C \n", cTemp);
-    //     }
+            // Output data to screen
+            fprintf(fp,"Temperature: %.2f C \n", cTemp);
+        }
 
 
-    //     fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
+        fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
 
-    //     for (int channel=0 ; channel<3;channel++){
-    //         double degree;
-    //         int raw = read_adc_raw(channel);
-    //         degree = raw_to_degree(raw);
-    //         if (raw < 0) {
-    //             fprintf(stderr, "Failed to read ADC channel %d\n", channel);
-    //             return 1;
-    //         }
-    //         fprintf(fp,"Temperature: %.2f C \n", degree);   
-    //     }
+
+        // ******** temp_reading
+        for (int channel=0 ; channel<3;channel++){
+            double degree;
+            int raw = read_adc_raw(channel);
+            degree = raw_to_degree(raw);
+            if (raw < 0) {
+                fprintf(stderr, "Failed to read ADC channel %d\n", channel);
+                return 1;
+            }
+            fprintf(fp,"Temperature: %.2f C \n", degree);   
+        }
         
-    //     fclose(fp);
-    //     sleep(1);
-    // }   
+        fclose(fp);
+        sleep(1);
+    }   
 
     return 0;
 }
