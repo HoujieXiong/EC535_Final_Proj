@@ -14,8 +14,10 @@
 #include <unistd.h>
 
 
-// Macros 
+// Macros (LIGHT)
 #define LIGHT_GPIO 			66			    // GPIO number used for controlling flood light relay
+#define TEMP_LOW            20              // Low temperature bound
+#define TEMP_HIGH           100             // High temperature bound
 #define TEMP_THRESHOLD		27			    // Threshold temperature (in Celsius) below which the grow lights should turn on
 
 
@@ -28,12 +30,6 @@ void digitalWrite (int gpio, int value);    // Write HIGH or LOW to a selected G
 
 int main()
 {
-    // Write file destination 
-    // FILE* fp;
-    // if((fp= fopen ("output.txt","w"))<0){
-    //     printf("Failed to open output.txt");
-    // }
-
 
 	/*************Hardware Setup*****************/
 
@@ -44,191 +40,106 @@ int main()
 	{
 		printf("Failed to open the bus. \n");
 		exit(1);
-	}
+	} 
 
+    // GPIO SETUP MIGRATED TO SHELL SCRIPT
+    
 
-	
-	// GPIO setup
-	// FILE *GPIO_SETUP;
-	// GPIO_SETUP = fopen("/sys/class/gpio/export", "w");
-	// if (GPIO_SETUP < 0) {
-
-	// 	perror("Failed to set up GPIO!\n");
-	// 	return -1;
-	// }
-	// fprintf(GPIO_SETUP, "%d", LIGHT_GPIO);
-	// fclose(GPIO_SETUP);
-
-	// Set GPIO direction
-	// char gpio_path[128];
-	// snprintf(gpio_path, sizeof(gpio_path), "/sys/class/gpio/gpio%d/direction", LIGHT_GPIO);
-	// GPIO_SETUP = fopen(path, "w");
-	// if (GPIO_SETUP < 0) {
-
-	// 	perror("Failed to set up GPIO! Check GPIO number.\n");
-	// 	return -1;
-	// }
-	// fprintf(GPIO_SETUP, "out");
-	// fclose(GPIO_SETUP);
-
-	
-	
-	/*************Humidity sensor processes*****************/
-
-	// // Get I2C device, SI7021 I2C address is 0x40(64)
-	// ioctl(file, I2C_SLAVE, 0x40);
-
-	// // Send humidity measurement command(0xF5)
-	// char config[1] = {0xF5};
-	// write(file, config, 1);
-    // sleep(1);
-
-	// // Read 2 bytes of humidity data
-	// // humidity msb, humidity lsb
-	// char data[2] = {0};
-	// if(read(file, data, 2) != 2)
-	// {
-	// 	printf("Error : Input/output Error \n");
-	// }
-	// else
-	// {
-	// 	// Convert the data
-	// 	float humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
-
-	// 	// Output data to screen
-	// 	fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
-	// }
-
-	// // Send temperature measurement command(0xF3)
-	// config[0] = 0xF3;
-	// write(file, config, 1); 
-	// sleep(1);
-
-	// // Read 2 bytes of temperature data
-	// // temp msb, temp lsb
-	// if (read(file, data, 2) != 2)
-	// {
-	// 	printf("Error : Input/output Error \n");
-	// }
-	// else
-	// {
-	// 	// Convert the data
-	// 	float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
-	// 	float fTemp = cTemp * 1.8 + 32;
-
-	// 	// Output data to screen
-	// 	fprintf(fp,"Temperature in Celsius : %.2f C \n", cTemp);
-	// 	fprintf(fp,"Temperature in Fahrenheit : %.2f F \n", fTemp);
-	// }
-
-
-
-	// /*************Temperature sensor (TMP36) readings*****************/
-
-    // // int channel = 0;  // AIN0
-    // // double degree;
-    // // int raw = read_adc_raw(channel);
-    // // degree = raw_to_degree(raw);
-    // // if (raw < 0) {
-    // //     fprintf(stderr, "Failed to read ADC channel %d\n", channel);
-    // //     return 1;
-    // // }
-    // // printf("AIN%d raw = %d\n degree = %f", channel, raw, degree);
-
-
-	// /*************Grow Light Control*****************/
-
-	// If the temperature falls below 27 degrees C, then the grow lights should come on
-	// if (degree < TEMP_THRESHOLD) {
-
-	// 	digitalWrite(LIGHT_GPIO, 1);
-	// } else {
-
-    //     digitalWrite(LIGHT_GPIO, 0);
-    // }
-
-    // DEBUG
-    digitalWrite(LIGHT_GPIO, 1);
-
-
-    // while (1) {
-
-    //     sleep(1);
-    //     digitalWrite(LIGHT_GPIO, 1);
-    //     sleep(1);
-    //     digitalWrite(LIGHT_GPIO, 0);
-    // }
-
+    
+    // Gardening system operation
     while (1) {
-        // Get I2C device, SI7021 I2C address is 0x40(64)
 
-        // ioctl(file, I2C_SLAVE, 0x40);
+        /*************Humidity sensor processes*****************/
+        
+        // Get I2C device, SI7021 I2C address is 0x40(64)
+        ioctl(file, I2C_SLAVE, 0x40);
 
         // Send humidity measurement command(0xF5)
-        // char config[1] = {0xF5};
-        // write(file, config, 1);
-        // sleep(1);
-        // float humidity;
+        char config[1] = {0xF5};
+        write(file, config, 1);
+        sleep(1);
+        float humidity;
+
         // Read 2 bytes of humidity data
         // humidity msb, humidity lsb
-        // char data[2] = {0};
-        // if(read(file, data, 2) != 2)
-        // {
-        //     printf("Error : Input/output Error \n");
-        // }
-        // else
-        // {
-        //     // Convert the data
-        //     humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
+        char data[2] = {0};
+        if(read(file, data, 2) != 2)
+        {
+            printf("Error : Input/output Error \n");
+        }
+        else
+        {
+            // Convert the data
+            humidity = (((data[0] * 256 + data[1]) * 125.0) / 65536.0) - 6;
 
-        //     // Output data to screen
-        // }
+            // Output data to screen (at the end)
+        }
 
-        // Send temperature measurement command(0xF3)
-        // config[0] = 0xF3;
-        // write(file, config, 1); 
-        // sleep(1);
+
+        // Send temperature measurement command(0xF3) - part of humidity sensor
+        config[0] = 0xF3;
+        write(file, config, 1); 
+        sleep(1);
 
         // Read 2 bytes of temperature data
         // temp msb, temp lsb
         FILE* fp;
-        if((fp= fopen ("output.txt","w"))<0){
+        if ((fp= fopen ("output.txt","w"))<0){
             printf("Failed to open output.txt");
         }
         
-        // if(read(file, data, 2) != 2)
-        // {
-        //     printf("Error : Input/output Error \n");
-        // }
-        // else
-        // {
-        //     // Convert the data
-        //     float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
-        //     float fTemp = cTemp * 1.8 + 32;
+        if (read(file, data, 2) != 2)
+        {
+            printf("Error : Input/output Error \n");
+        }
+        else
+        {
+            // Convert the data
+            float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
+            float fTemp = cTemp * 1.8 + 32;
 
-        //     // Output data to screen
-        //     fprintf(fp,"Temperature: %.2f C \n", cTemp);
-        // }
+            // Output data to screen
+            fprintf(fp,"Temperature: %.2f C \n", cTemp);
+        }
+
+        // Finally writing the relative humidity
+        fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
 
 
-        // fprintf(fp,"Relative Humidity : %.2f RH \n", humidity);
-
-
-        // ******** temp_reading
+        /*************Temperature sensor (TMP36) readings*****************/
+        double degree_avg = 0;
         for (int channel=0 ; channel<3;channel++){
             double degree;
             int raw = read_adc_raw(channel);
             degree = raw_to_degree(raw);
+            degree_avg += degree;
             if (raw < 0) {
                 fprintf(stderr, "Failed to read ADC channel %d\n", channel);
                 return 1;
             }
             fprintf(fp,"Temperature: %.2f C \n", degree);   
         }
-        
+        degree_avg = degree_avg / 3;
+
+
+        // /*************Grow Light Control*****************/
+
+        // If the temperature falls below 27 degrees C, then the grow lights should come on
+        if (degree_avg < TEMP_LOW) {
+
+            digitalWrite(LIGHT_GPIO, 1);
+            fprintf(fp, "Grow light is on! Too COLD!\n");
+        } else if (degree_avg > TEMP_HIGH) {
+
+            digitalWrite(LIGHT_GPIO, 0);
+            fprintf(fp, "Grow light is off! Too HOT!\n");
+        }
+
+        // Close output file
         fclose(fp);
+
         sleep(1);
-    }   
+    }
 
     return 0;
 }
