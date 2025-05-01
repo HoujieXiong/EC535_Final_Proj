@@ -100,8 +100,7 @@ int main()
             cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
             fTemp = cTemp * 1.8 + 32;
 
-            // Output data to screen
-            fprintf(fp,"Temperature: %.2f C \n", cTemp);
+            // Output data to screen (done after getting average)
         }
 
         // Finally writing the relative humidity
@@ -119,10 +118,12 @@ int main()
                 fprintf(stderr, "Failed to read ADC channel %d\n", channel);
                 return 1;
             }
-            fprintf(fp,"Temperature: %.2f C \n", degree);   
         }
         degree_avg += cTemp;
         degree_avg = degree_avg / 3;
+
+        // Print out average temperature to output file
+        fprintf(fp,"Temperature: %.2f C \n", degree_avg);   
 
 
         // /*************Grow Light Control*****************/
