@@ -17,7 +17,7 @@
 // Macros (LIGHT)
 #define LIGHT_GPIO 			66			    // GPIO number used for controlling flood light relay
 #define TEMP_LOW            20              // Low temperature bound
-#define TEMP_HIGH           100             // High temperature bound
+#define TEMP_HIGH           22              // High temperature bound
 #define TEMP_THRESHOLD		27			    // Threshold temperature (in Celsius) below which the grow lights should turn on
 
 
