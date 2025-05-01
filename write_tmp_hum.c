@@ -43,7 +43,7 @@ int main()
 	} 
 
     // GPIO SETUP MIGRATED TO SHELL SCRIPT
-    
+
 
     
     // Gardening system operation
@@ -83,6 +83,8 @@ int main()
 
         // Read 2 bytes of temperature data
         // temp msb, temp lsb
+        float cTemp;                            // Celsius temperature (from humidity sensor)
+        float fTemp;                            // Fahrenheit temperature 
         FILE* fp;
         if ((fp= fopen ("output.txt","w"))<0){
             printf("Failed to open output.txt");
@@ -95,8 +97,8 @@ int main()
         else
         {
             // Convert the data
-            float cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
-            float fTemp = cTemp * 1.8 + 32;
+            cTemp = (((data[0] * 256 + data[1]) * 175.72) / 65536.0) - 46.85;
+            fTemp = cTemp * 1.8 + 32;
 
             // Output data to screen
             fprintf(fp,"Temperature: %.2f C \n", cTemp);
@@ -108,7 +110,7 @@ int main()
 
         /*************Temperature sensor (TMP36) readings*****************/
         double degree_avg = 0;
-        for (int channel=0 ; channel<3;channel++){
+        for (int channel=0 ; channel<2; channel++){
             double degree;
             int raw = read_adc_raw(channel);
             degree = raw_to_degree(raw);
@@ -119,6 +121,7 @@ int main()
             }
             fprintf(fp,"Temperature: %.2f C \n", degree);   
         }
+        degree_avg += cTemp;
         degree_avg = degree_avg / 3;
 
 
