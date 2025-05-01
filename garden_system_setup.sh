@@ -3,6 +3,7 @@
 
 # Open GPIO 66 to the file system and set it as output
 sudo echo 66 > /sys/class/gpio/export
+sleep 1
 sudo echo out > /sys/class/gpio/gpio66/direction
 
 # Run program
