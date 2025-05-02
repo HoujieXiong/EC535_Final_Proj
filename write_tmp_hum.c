@@ -16,8 +16,8 @@
 
 // Macros (LIGHT)
 #define LIGHT_GPIO 			66			    // GPIO number used for controlling flood light relay
-#define TEMP_LOW            20              // Low temperature bound
-#define TEMP_HIGH           22              // High temperature bound
+#define TEMP_LOW            21              // Low temperature bound
+#define TEMP_HIGH           23              // High temperature bound
 #define TEMP_THRESHOLD		27			    // Threshold temperature (in Celsius) below which the grow lights should turn on
 
 
@@ -63,7 +63,7 @@ int main()
         // Read 2 bytes of humidity data
         // humidity msb, humidity lsb
         char data[2] = {0};
-        if(read(file, data, 2) != 2)
+        if (read(file, data, 2) != 2)
         {
             printf("Error : Input/output Error \n");
         }
@@ -86,7 +86,7 @@ int main()
         float cTemp;                            // Celsius temperature (from humidity sensor)
         float fTemp;                            // Fahrenheit temperature 
         FILE* fp;
-        if ((fp= fopen ("output.txt","w"))<0){
+        if ((fp= fopen ("output.txt","w"))<0) {
             printf("Failed to open output.txt");
         }
         
