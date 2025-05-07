@@ -36,11 +36,11 @@ int main()
 	// Create I2C bus
 	int file;
 	char *bus = "/dev/i2c-2";
-	if((file = open(bus, O_RDWR)) < 0) 
+	if ((file = open(bus, O_RDWR)) < 0) 
 	{
 		printf("Failed to open the bus. \n");
 		exit(1);
-	} 
+	}
 
     // GPIO SETUP MIGRATED TO SHELL SCRIPT
 
@@ -119,8 +119,10 @@ int main()
                 return 1;
             }
         }
-        degree_avg += cTemp;
-        degree_avg = degree_avg / 3;
+        // NOTE: Averageing TMP36 readings only because we want to isolate the one on the humidity sensor
+        //degree_avg += cTemp;
+        degree_avg = degree_avg / 2;
+        
 
         // Print out average temperature to output file
         fprintf(fp,"Temperature: %.2f C \n", degree_avg);   
