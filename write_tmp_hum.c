@@ -119,9 +119,14 @@ int main()
                 return 1;
             }
         }
+        
+        
         // NOTE: Averageing TMP36 readings only because we want to isolate the one on the humidity sensor
         //degree_avg += cTemp;
-        degree_avg = degree_avg / 2;
+        // degree_avg = degree_avg / 2;
+
+        // NOTE: This is for only temperature reading from the humidity sensor
+        degree_avg = cTemp;
         
 
         // Print out average temperature to output file
