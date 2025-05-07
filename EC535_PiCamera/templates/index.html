@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Live Image</title>
+	
+	<script>
+		function updateImage() {
+			document.getElementById("img").src = "/static/image.jpg?t=" + new Date().getTime();
+		}
+		
+		function startTimer() {
+			setInterval(updateImage, 3000);
+		}
+	</script>
+</head>
+
+<body onload = "startTimer()">
+	<h1>Live Image Feed</h1>
+	<img id="img" src="/static/image.jpg" width="640" height="480">
+
+
+</body>
+
+</html>
